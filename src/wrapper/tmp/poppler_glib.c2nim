@@ -1,0 +1,14 @@
+#ifdef C2NIM
+#cdecl
+#def G_BEGIN_DECLS
+#def POPPLER_PUBLIC
+#def POPPLER_TYPE_ACTION (poppler_action_get_type())
+#def POPPLER_ACTION(obj) (G_TYPE_CHECK_INSTANCE_CAST((obj), POPPLER_TYPE_ACTION, PopplerAction))
+#def G_GNUC_CONST
+#def G_END_DECLS
+#def G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+#def G_GNUC_END_IGNORE_DEPRECATIONS
+#def G_GNUC_DEPRECATED_FOR(x)
+#def G_GNUC_MALLOC
+#assumndef _MSC_VER 
+#endif

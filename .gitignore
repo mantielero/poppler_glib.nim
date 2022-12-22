@@ -1,3 +1,11 @@
 nimcache/
 nimblecache/
 htmldocs/
+src/wrapper_old/
+src/wrapper/postprocess
+src/glib/*.backup
+examples/*
+!examples/*.nim
+!examples/*.c
+!examples/*.nims
+
