@@ -9,14 +9,14 @@ type
   Guint*   = uint        # FIXME
   Guint16* = uint16      # FIXME  
   Guint8*  = uint8       # FIXME    
-  Glist*   = object      # FIXME
+  #Glist*   = object      # FIXME
   Gchar*   = uint        # FIXME    
 
   Gint* = int # FIXME
 
   Gboolean* = bool # FIXME
   Gdouble* = float # FIXME
-  Gpointer* = uint # FIXME
+  #Gpointer* = uint # FIXME
 
   Gobject* = object # FIXME
   GTime* = object # FIXME
@@ -61,14 +61,47 @@ type
 #popplerDestGetType* = object
 
 # GLIB================================
-{.push header: "glib/gerror.h".}
+{.push header: "poppler.h".}
 type
+  Gpointer* = pointer
+#{.pop.}
+#{.push header: "glib/gerror.h".}
+type
+  # Error management
   GQuark* {.importc.} = object
   GError* {.importc.} = object
     domain*:GQuark
     code*: cint
     message*: cstring
+#{.pop.}
+
+#{.push header: "glib/glist.h".}
+type
+  # List management
+  GList* {.importc.} = ref object 
+    data* {.importc.} : Gpointer
+    next* {.importc.} : GList
+    prev* {.importc.} : GList
+
+  GListPtr* = ptr GList 
 {.pop.}
+
+proc g_list_length*( list: GList):cuint {.importc,cdecl, dynlib:"libglib-2.0.so".}
+
+proc g_slist_length*( list: GList):cuint {.importc,cdecl, dynlib:"libglib-2.0.so".}
+
+proc g_list_first*( list: GList): GList  {.importc,cdecl, dynlib:"libglib-2.0.so".}
+
+#proc g_list_next*( list: GList):GList {.importcpp:"#->next",cdecl, dynlib:"libglib-2.0.so".}
+
+proc length*(list: GList ):int =
+  g_slist_length(list).int
+
+proc length*(list: ptr GList ):int =
+  g_slist_length(list[]).int
+
+
+#proc getData*(list:GList):Gpointer {.importcpp:"#->data",cdecl,header: "poppler.h".}
 # =====================================
 
 
@@ -76,7 +109,6 @@ type
 type
   PopplerDocument* {.importc: "PopplerDocument", incompletestruct.} = object
   PopplerPage* {.importc: "PopplerPage", incompletestruct.} = object
-
 
 
 {.pop.}
@@ -960,7 +992,7 @@ type
     POPPLER_MOVIE_PLAY_MODE_ONCE, POPPLER_MOVIE_PLAY_MODE_OPEN,
     POPPLER_MOVIE_PLAY_MODE_REPEAT, POPPLER_MOVIE_PLAY_MODE_PALINDROME
 type
-  PopplerRectangle* {.importc: "_PopplerRectangle", header: "poppler-page.h", bycopy.} = object
+  PopplerRectangle* {.importc: "struct _PopplerRectangle", header: "poppler-page.h", bycopy.} = object
     x1* {.importc: "x1".}: Gdouble
     y1* {.importc: "y1".}: Gdouble
     x2* {.importc: "x2".}: Gdouble
@@ -1007,7 +1039,7 @@ type
     rectangular* {.importc: "rectangular".}: Gboolean
     durationReal* {.importc: "duration_real".}: Gdouble
 type
-  PopplerImageMapping* {.importc: "_PopplerImageMapping", header: "poppler-page.h",
+  PopplerImageMapping* {.importc: "struct _PopplerImageMapping", header: "poppler-page.h",
                         bycopy.} = object
     area* {.importc: "area".}: PopplerRectangle
     imageId* {.importc: "image_id".}: Gint
@@ -1022,3 +1054,31 @@ type
     area* {.importc: "area".}: PopplerRectangle
     annot* {.importc: "annot".}: ptr PopplerAnnot
 
+
+# Hand made
+# {.push header:"poppler.h".}
+# type
+#   ImageMapping* {.importc:"poppler_image_mapping_t".} = object
+#     page*: PopplerPage
+#     width*: cdouble
+#     height*: cdouble
+#     area*: PopplerRectangle
+#     image*: Surface
+#     mask*: cint
+#     mask_len*: cint
+#     image_id*: cint
+# #[
+# struct _poppler_image_mapping
+# {
+#   poppler_page_t *page;
+#   gdouble width;
+#   gdouble height;
+#   poppler_rectangle_t area;
+#   cairo_surface_t *image;
+#   gint *mask;
+#   int mask_len;
+#   int image_id;
+# };
+# ]#
+
+# {.pop.}

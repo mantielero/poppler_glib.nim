@@ -19,6 +19,12 @@ proc numberPages*(doc:Document):int =
 proc getPage*( doc:Document; n:SomeUnsignedInt ):Page =
   popplerDocumentGetPage(doc, n.cint)
 
+#[ TODO:
+    if (!page) {
+      g_error("Failed to load page %d", i);
+      continue;
+    }
+]#
 
 iterator pages*(doc:Document):Page =
   for i in 0..< doc.numberPages:

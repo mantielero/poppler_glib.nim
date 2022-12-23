@@ -18,23 +18,21 @@ import cairo  # Context
 ##  Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.
 ##
 
-# import
-#   poppler
 
 # const
 #   POPPLER_TYPE_PAGE* = (popplerPageGetType())
 
-template poppler_Page*(obj: untyped): untyped =
-  (g_Type_Check_Instance_Cast((obj), poppler_Type_Page, popplerPage))
+# template poppler_Page*(obj: untyped): untyped =
+#   (g_Type_Check_Instance_Cast((obj), poppler_Type_Page, popplerPage))
 
-template poppler_Is_Page*(obj: untyped): untyped =
-  (g_Type_Check_Instance_Type((obj), poppler_Type_Page))
+# template poppler_Is_Page*(obj: untyped): untyped =
+#   (g_Type_Check_Instance_Type((obj), poppler_Type_Page))
 
 {.push dynlib:"libpoppler-glib.so", cdecl.} # header: "poppler-page.h"
 proc popplerPageGetType*(): GType {.importc: "poppler_page_get_type".}
 
 # ptr CairoT)
-proc popplerPageRender*(page: ptr PopplerPage; cairo: ptr Context) {.importc: "poppler_page_render".}
+proc popplerPageRender*(page: ptr PopplerPage; cairo: ptr CairoT) {.importc: "poppler_page_render".}
 
 proc popplerPageRenderForPrinting*(page: ptr PopplerPage; cairo: ptr CairoT) {.
     importc: "poppler_page_render_for_printing".}
@@ -56,8 +54,10 @@ proc popplerPageRenderSelection*(page: ptr PopplerPage; cairo: ptr CairoT;
 
 
 proc popplerPageGetSize*(page: ptr PopplerPage; width: ptr cdouble; height: ptr cdouble) {.
-    importc: "poppler_page_get_size".} # , header: "poppler-page.h"
+    importc: "poppler_page_get_size".} 
 {.pop.}
+
+
 proc popplerPageGetIndex*(page: ptr PopplerPage): cint {.cdecl,
     importc: "poppler_page_get_index", header: "poppler-page.h".}
 proc popplerPageGetLabel*(page: ptr PopplerPage): ptr Gchar {.cdecl,

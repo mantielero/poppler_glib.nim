@@ -19,14 +19,14 @@ import glib_types
 ##
 
 
-const
-  POPPLER_TYPE_ATTACHMENT* = (popplerAttachmentGetType())
+# const
+#   POPPLER_TYPE_ATTACHMENT* = (popplerAttachmentGetType())
 
-template poppler_Attachment*(obj: untyped): untyped =
-  (g_Type_Check_Instance_Cast((obj), poppler_Type_Attachment, popplerAttachment))
+# template poppler_Attachment*(obj: untyped): untyped =
+#   (g_Type_Check_Instance_Cast((obj), poppler_Type_Attachment, popplerAttachment))
 
-template poppler_Is_Attachment*(obj: untyped): untyped =
-  (g_Type_Check_Instance_Type((obj), poppler_Type_Attachment))
+# template poppler_Is_Attachment*(obj: untyped): untyped =
+#   (g_Type_Check_Instance_Type((obj), poppler_Type_Attachment))
 
 ## *
 ##  PopplerAttachmentSaveFunc:
@@ -47,20 +47,17 @@ template poppler_Is_Attachment*(obj: untyped): untyped =
 ##
 
 
-
-
-
-
-
-
 proc popplerAttachmentGetType*(): GType {.cdecl,
                                        importc: "poppler_attachment_get_type",
                                        header: "poppler-attachment.h".}
+
 proc popplerAttachmentGetChecksum*(attachment: ptr PopplerAttachment): ptr GString {.
     cdecl, importc: "poppler_attachment_get_checksum",
     header: "poppler-attachment.h".}
+
 proc popplerAttachmentGetCtime*(attachment: ptr PopplerAttachment): ptr GDateTime {.
     cdecl, importc: "poppler_attachment_get_ctime", header: "poppler-attachment.h".}
+
 proc popplerAttachmentGetDescription*(attachment: ptr PopplerAttachment): ptr Gchar {.
     cdecl, importc: "poppler_attachment_get_description",
     header: "poppler-attachment.h".}
@@ -68,6 +65,7 @@ proc popplerAttachmentGetMtime*(attachment: ptr PopplerAttachment): ptr GDateTim
     cdecl, importc: "poppler_attachment_get_mtime", header: "poppler-attachment.h".}
 proc popplerAttachmentGetName*(attachment: ptr PopplerAttachment): ptr Gchar {.cdecl,
     importc: "poppler_attachment_get_name", header: "poppler-attachment.h".}
+    
 proc popplerAttachmentGetSize*(attachment: ptr PopplerAttachment): Gsize {.cdecl,
     importc: "poppler_attachment_get_size", header: "poppler-attachment.h".}
 proc popplerAttachmentSave*(attachment: ptr PopplerAttachment; filename: cstring;
